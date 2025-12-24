@@ -80,9 +80,13 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Photo Placeholder */}
-            <div className="aspect-square backdrop-blur-lg bg-white/30 rounded-2xl border border-white/20 shadow-xl flex items-center justify-center">
-              <span className="text-gray-500 text-lg">Photo</span>
+            {/* Photo */}
+            <div className="aspect-square backdrop-blur-lg bg-white/30 rounded-2xl border border-white/20 shadow-xl overflow-hidden">
+              <img
+                src="/thePhoto.jpeg"
+                alt="Kourtney Shamwell"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>
