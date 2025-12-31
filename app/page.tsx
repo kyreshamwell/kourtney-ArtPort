@@ -177,29 +177,29 @@ export default function Home() {
           <p className="text-xl text-gray-700 mb-12">Let's Connect!</p>
 
           {/* Contact Links */}
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 justify-center">
             <a
               href="mailto:kourtney@example.com"
               className="px-6 py-3 backdrop-blur-lg bg-white/30 border border-white/20 shadow-lg rounded-full text-gray-900 font-semibold hover:bg-white/50 transition-all"
             >
               Email
             </a>
-            <a
+            {/* <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 backdrop-blur-lg bg-white/30 border border-white/20 shadow-lg rounded-full text-gray-900 font-semibold hover:bg-white/50 transition-all"
             >
               Instagram
-            </a>
-            <a
+            </a> */}
+            {/* <a
               href="https://linkedin.com"
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 backdrop-blur-lg bg-white/30 border border-white/20 shadow-lg rounded-full text-gray-900 font-semibold hover:bg-white/50 transition-all"
             >
               LinkedIn
-            </a>
+            </a> */}
           </div>
         </div>
       </section>
@@ -207,10 +207,10 @@ export default function Home() {
       {/* Fullscreen Image Modal */}
       {selectedImage && (
         <div
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 overflow-y-auto"
           onClick={() => setSelectedImage(null)}
         >
-          <div className="relative max-w-7xl max-h-[90vh] w-full h-full flex flex-col items-center justify-center">
+          <div className="relative max-w-7xl w-full flex flex-col items-center justify-center py-8">
             <button
               onClick={() => setSelectedImage(null)}
               className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 transition-colors z-10"
@@ -220,14 +220,14 @@ export default function Home() {
             <img
               src={selectedImage.image_url}
               alt={selectedImage.title}
-              className="max-w-full max-h-full object-contain"
+              className="max-w-full max-h-[70vh] object-contain"
               onClick={(e) => e.stopPropagation()}
             />
-            <div className="mt-6 text-center">
+            <div className="mt-6 text-center px-4">
               <h3 className="text-2xl font-bold text-white mb-2">{selectedImage.title}</h3>
               <p className="text-lg text-gray-300">{selectedImage.category}</p>
               {selectedImage.description && (
-                <p className="text-gray-400 mt-2 max-w-2xl">{selectedImage.description}</p>
+                <p className="text-gray-400 mt-2 max-w-2xl mx-auto">{selectedImage.description}</p>
               )}
             </div>
           </div>
