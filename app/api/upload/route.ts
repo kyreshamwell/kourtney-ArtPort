@@ -16,31 +16,74 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
     }
 
+    // Allow larger uploads since we'll compress them automatically
+    // Maximum 100MB before compression (very generous for initial upload)
+    const maxSize = 100 * 1024 * 1024 // 100MB
+    if (file.size > maxSize) {
+      return NextResponse.json({ error: 'File too large. Maximum size is 100MB. The image will be automatically optimized after upload.' }, { status: 400 })
+    }
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      return NextResponse.json({ error: 'File must be an image' }, { status: 400 })
+    }
+
+    console.log('Uploading file:', file.name, 'Size:', file.size, 'Type:', file.type)
+
     // Convert file to base64
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
     const base64 = buffer.toString('base64')
     const dataUri = `data:${file.type};base64,${base64}`
 
-    // Upload to Cloudinary with centered semi-transparent watermark
+    // Upload image first without watermark, then get the URL with watermark applied via transformation
     const result = await cloudinary.uploader.upload(dataUri, {
       folder: 'gallery',
-      transformation: {
-        overlay: {
-          font_family: 'Arial',
-          font_size: 80,
-          font_weight: 'bold',
-          text: '%C2%A9%20Kourtney%20Shamwell', // URL encoded "© Kourtney Shamwell"
-        },
-        color: 'white',
-        opacity: 35,
-        gravity: 'center',
-      },
+      quality: 'auto:good',
+      width: 2500,
+      height: 2500,
+      crop: 'limit',
     })
+
+    // Two vertical watermarks - left and center - going up and down
+    const watermarkedUrl = cloudinary.url(result.public_id, {
+      secure: true,
+      transformation: [
+        // Left vertical watermark
+        {
+          overlay: {
+            font_family: 'Arial',
+            font_size: 60,
+            font_weight: 'bold',
+            text: 'Kourtney%20Shamwell'
+          },
+          color: 'white',
+          opacity: 50,
+          gravity: 'west',
+          angle: -90, // Vertical
+          x: 100
+        },
+        // Center vertical watermark
+        {
+          overlay: {
+            font_family: 'Arial',
+            font_size: 60,
+            font_weight: 'bold',
+            text: 'Kourtney%20Shamwell'
+          },
+          color: 'white',
+          opacity: 50,
+          gravity: 'center',
+          angle: -90 // Vertical
+        },
+      ],
+    })
+
+    console.log('Generated watermarked URL:', watermarkedUrl)
 
     return NextResponse.json({
       success: true,
-      url: result.secure_url,
+      url: watermarkedUrl,
     })
   } catch (error) {
     console.error('Upload error:', error)

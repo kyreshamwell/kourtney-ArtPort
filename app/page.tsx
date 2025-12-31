@@ -151,7 +151,7 @@ export default function Home() {
                   className="group cursor-pointer"
                   onClick={() => setSelectedImage(item)}
                 >
-                  <div className="aspect-square backdrop-blur-lg bg-white/30 rounded-xl border border-white/20 shadow-lg mb-4 group-hover:shadow-2xl group-hover:scale-105 transition-all overflow-hidden">
+                  <div className="aspect-square rounded-xl shadow-lg mb-4 group-hover:shadow-2xl group-hover:scale-105 transition-all overflow-hidden">
                     <img
                       src={item.image_url}
                       alt={item.title}

@@ -64,7 +64,8 @@ export default function AdminPage() {
       })
 
       if (!uploadResponse.ok) {
-        throw new Error('Upload failed')
+        const errorData = await uploadResponse.json()
+        throw new Error(errorData.error || 'Upload failed')
       }
 
       const { url: imageUrl } = await uploadResponse.json()
@@ -98,7 +99,8 @@ export default function AdminPage() {
       alert('Gallery item added successfully with watermark!')
     } catch (error) {
       console.error('Error adding gallery item:', error)
-      alert('Error adding gallery item')
+      const errorMessage = error instanceof Error ? error.message : 'Error adding gallery item'
+      alert(errorMessage)
     } finally {
       setUploading(false)
     }
